@@ -1,0 +1,30 @@
+{
+  "name": "cw-vue-template",
+  "version": "0.1.2",
+  "private": true,
+  "scripts": {
+    "serve": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@bcwdev/auth0provider-client": "^0.0.13",
+    "@mdi/font": "^7.0.96",
+    "@popperjs/core": "^2.11.6",
+    "axios": "^0.27.2",
+    "bootstrap": "^5.2.0",
+    "socket.io-client": "^4.5.1",
+    "sweetalert2": "^11.4.26",
+    "vue": "^3.2.37",
+    "vue-router": "^4.1.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "3.0.3",
+    "@vue/compiler-sfc": "3.2.37",
+    "eslint": "8.22.0",
+    "eslint-plugin-import": "2.26.0",
+    "eslint-plugin-node": "11.1.0",
+    "eslint-plugin-vue": "9.4.0",
+    "sass": "1.54.5",
+    "vite": "3.0.9"
+  }
+}
