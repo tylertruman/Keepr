@@ -43,5 +43,37 @@ namespace Keepr.Repositories
         return keep;
       }, new { id }).FirstOrDefault();
     }
+
+    internal Keep Create(Keep newKeep)
+    {
+      string sql = @"
+      INSERT INTO keeps
+      (name, description, img, creatorId)
+      VALUES
+      (@name, @description, @img, @creatorId);
+      SELECT LAST_INSERT_ID();";
+      int id = _db.ExecuteScalar<int>(sql, newKeep);
+      newKeep.Id = id;
+      return newKeep;
+    }
+
+    internal Keep Update(Keep keepData)
+    {
+      string sql = @"
+      UPDATE keeps SET
+      name = @name,
+      description = @description,
+      img = @img
+      WHERE id = @id;";
+      _db.Execute(sql, keepData);
+      return keepData;
+    }
+
+    internal void Delete(int id)
+    {
+      string sql = @"
+      DELETE FROM keeps WHERE id = @id;";
+      _db.Execute(sql, new { id });
+    }
   }
 }

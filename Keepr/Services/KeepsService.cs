@@ -26,5 +26,33 @@ namespace Keepr.Services
       }
       return keep;
     }
+    internal Keep Create(Keep newKeep)
+    {
+      return _keepsRepo.Create(newKeep);
+    }
+
+    internal Keep Update(Keep update, string userId)
+    {
+      Keep original = GetOne(update.Id);
+      if (original.CreatorId != userId)
+      {
+        throw new Exception("You are not the creator of this Keep, you are not authorized.");
+      }
+      original.Name = update.Name ?? original.Name;
+      original.Description = update.Description ?? original.Description;
+      original.Img = update.Img ?? original.Img;
+      return _keepsRepo.Update(original);
+    }
+
+    internal string Delete(int id, string userId)
+    {
+      Keep original = GetOne(id);
+      if (original.CreatorId != userId)
+      {
+        throw new Exception("You are not the creator of this Keep, You are not authorized to delete it.");
+      }
+      _keepsRepo.Delete(id);
+      return $"Keep {original.Name} has been deleted.";
+    }
   }
 }
