@@ -18,11 +18,13 @@ CREATE TABLE IF NOT EXISTS keeps(
   kept INT NOT NULL DEFAULT 0,
   shares INT NOT NULL DEFAULT 0,
   creatorId VARCHAR(255) NOT NULL,
-  vaultKeepId INT NOT NULL,
+  vaultKeepId INT,
   FOREIGN KEY (creatorId) REFERENCES accounts(id) ON DELETE CASCADE
   -- FOREIGN kEY (vaultKeepId) REFERENCES vaultKeeps(id) ON DELETE CASCADE
 ) DEFAULT CHARSET utf8 COMMENT '';
 -- vaultKeepId INT NOTE dont know if I really need this should ask
+
+ALTER TABLE vaultKeeps DROP FOREIGN KEY vaultKeeps_ibfk_3;
 
 ALTER TABLE keeps ADD FOREIGN KEY (vaultKeepId) REFERENCES vaultKeeps(id) ON DELETE CASCADE;
 
@@ -52,3 +54,8 @@ CREATE TABLE IF NOT EXISTS vaultKeeps(
   FOREIGN kEY (vaultId) REFERENCES vaults(id) ON DELETE CASCADE,
   FOREIGN KEY (keepId) REFERENCES keeps(id) ON DELETE CASCADE
 ) DEFAULT CHARSET utf8 COMMENT '';
+
+-- INSERT INTO keeps
+-- (name, img, description, creatorId, vaultKeepId)
+-- VALUES
+-- ("Wild Dingo", "https://www.boredpanda.com/blog/wp-content/uploads/2020/11/raccoons-hot-dogs-james-blackwood-nova-scotia-coverimage.jpg", "63059889588984525e6be97d", );

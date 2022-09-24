@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using CodeWorks.Auth0Provider;
 using Keepr.Models;
@@ -25,6 +26,21 @@ namespace Keepr.Controllers
         Account user = await HttpContext.GetUserInfoAsync<Account>();
         Vault vault = _vaultsService.GetOne(id, user?.Id);
         return Ok(vault);
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
+    // NOTE trying something new here
+    [HttpGet("{id}/keeps")]
+    public async Task<ActionResult<List<Keep>>> GetKeeps(int id)
+    {
+      try
+      {
+        Account user = await HttpContext.GetUserInfoAsync<Account>();
+        List<Keep> keeps = _vaultsService.GetKeeps(id, user?.Id);
+        return Ok(keeps);
       }
       catch (Exception e)
       {

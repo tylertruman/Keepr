@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Keepr.Models;
 using Keepr.Repositories;
 
@@ -27,6 +28,11 @@ namespace Keepr.Services
       }
       return vault;
     }
+    internal List<Keep> GetKeeps(int id, string userId)
+    {
+      Vault vault = GetOne(id, userId);
+      return _keepsRepo.GetKeepsByVaultId(id);
+    }
 
     internal Vault Create(Vault vaultData)
     {
@@ -45,6 +51,7 @@ namespace Keepr.Services
       original.IsPrivate = update.IsPrivate ?? original.IsPrivate;
       return _vaultsRepo.Update(original);
     }
+
 
     internal string Delete(int id, Account user)
     {
