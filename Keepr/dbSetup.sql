@@ -18,9 +18,17 @@ CREATE TABLE IF NOT EXISTS keeps(
   kept INT NOT NULL DEFAULT 0,
   shares INT NOT NULL DEFAULT 0,
   creatorId VARCHAR(255) NOT NULL,
-  FOREIGN KEY (creatorId) REFERENCES accounts(id)
+  vaultKeepId INT NOT NULL,
+  FOREIGN KEY (creatorId) REFERENCES accounts(id) ON DELETE CASCADE
+  -- FOREIGN kEY (vaultKeepId) REFERENCES vaultKeeps(id) ON DELETE CASCADE
 ) DEFAULT CHARSET utf8 COMMENT '';
 -- vaultKeepId INT NOTE dont know if I really need this should ask
+
+ALTER TABLE keeps ADD FOREIGN KEY (vaultKeepId) REFERENCES vaultKeeps(id) ON DELETE CASCADE;
+
+DROP TABLE keeps;
+DROP TABLE vaults;
+DROP TABLE vaultKeeps;
 
 CREATE TABLE IF NOT EXISTS vaults(
   id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
@@ -30,7 +38,7 @@ CREATE TABLE IF NOT EXISTS vaults(
   description TEXT NOT NULL,
   isPrivate BOOLEAN NOT NULL DEFAULT false,
   creatorId VARCHAR(255) NOT NULL,
-  FOREIGN KEY (creatorId) REFERENCES accounts(id)
+  FOREIGN KEY (creatorId) REFERENCES accounts(id) ON DELETE CASCADE
 ) DEFAULT CHARSET utf8 COMMENT '';
 
 CREATE TABLE IF NOT EXISTS vaultKeeps(
@@ -40,7 +48,7 @@ CREATE TABLE IF NOT EXISTS vaultKeeps(
   creatorId VARCHAR(255) NOT NULL,
   vaultId INT NOT NULL,
   keepId INT NOT NULL,
-  FOREIGN KEY (creatorId) REFERENCES accounts(id),
-  FOREIGN kEY (vaultId) REFERENCES vaults(id),
-  FOREIGN KEY (keepId) REFERENCES keeps(id)
+  FOREIGN KEY (creatorId) REFERENCES accounts(id) ON DELETE CASCADE,
+  FOREIGN kEY (vaultId) REFERENCES vaults(id) ON DELETE CASCADE,
+  FOREIGN KEY (keepId) REFERENCES keeps(id) ON DELETE CASCADE
 ) DEFAULT CHARSET utf8 COMMENT '';
