@@ -26,6 +26,15 @@ namespace Keepr.Services
       }
       return keep;
     }
+    internal VaultKeepViewModel GetViewModelById(int keepId)
+    {
+      VaultKeepViewModel keep = _keepsRepo.GetViewModelById(keepId);
+      if(keep == null)
+      {
+        throw new Exception("No keep by that ID.");
+      }
+      return keep;
+    }
     internal Keep Create(Keep newKeep)
     {
       return _keepsRepo.Create(newKeep);
@@ -54,5 +63,6 @@ namespace Keepr.Services
       _keepsRepo.Delete(id);
       return $"Keep {original.Name} has been deleted.";
     }
+
   }
 }

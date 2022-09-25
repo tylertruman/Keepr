@@ -44,7 +44,7 @@ namespace Keepr.Repositories
       }, new { id }).FirstOrDefault();
     }
 
-    internal VaultKeep Create(VaultKeep vaultKeepData)
+    internal int Create(VaultKeep newVaultKeep)
     {
       string sql = @"
       INSERT INTO vaultKeeps
@@ -52,9 +52,9 @@ namespace Keepr.Repositories
       VALUES
       (@creatorId, @vaultId, @keepId);
       SELECT LAST_INSERT_ID();";
-      int id = _db.ExecuteScalar<int>(sql, vaultKeepData);
-      vaultKeepData.Id = id;
-      return vaultKeepData;
+      int id = _db.ExecuteScalar<int>(sql, newVaultKeep);
+      newVaultKeep.Id = id;
+      return id;
     }
 
     internal void Delete(int id)

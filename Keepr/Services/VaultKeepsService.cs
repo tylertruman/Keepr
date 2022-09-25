@@ -8,9 +8,13 @@ namespace Keepr.Services
   public class VaultKeepsService
   {
     private readonly VaultKeepsRepository _vaultKeepsRepo;
-    public VaultKeepsService(VaultKeepsRepository vaultKeepsRepo)
+    private readonly VaultsService _vaultsService;
+    private readonly KeepsService _keepsService;
+    public VaultKeepsService(VaultKeepsRepository vaultKeepsRepo, VaultsService vaultsService, KeepsService keepsService)
     {
       _vaultKeepsRepo = vaultKeepsRepo;
+      _vaultsService = vaultsService;
+      _keepsService = keepsService;
     }
 
     internal List<VaultKeep> GetAll()
@@ -26,9 +30,17 @@ namespace Keepr.Services
       }
       return vaultKeep;
     }
-    internal VaultKeep Create(VaultKeep vaultKeepData)
+    internal VaultKeepViewModel Create(VaultKeep newVaultKeep, string userId)
     {
-      return _vaultKeepsRepo.Create(vaultKeepData);
+      Vault vault = _vaultsService.GetOne(newVaultKeep.VaultId, userId);
+      if(vault.CreatorId != userId)
+      {
+        throw new Exception("You are not authorized");
+      }
+      int id = _vaultKeepsRepo.Create(newVaultKeep);
+      VaultKeepViewModel vaultKeep = _keepsService.GetViewModelById(newVaultKeep.KeepId);
+      vaultKeep.VaultKeepId = id;
+      return vaultKeep;
     }
 
     internal string Delete(int id, string userId)
