@@ -3,7 +3,7 @@ using Keepr.Repositories;
 
 namespace Keepr.Services
 {
-    public class AccountService
+  public class AccountService
     {
         private readonly AccountsRepository _repo;
         public AccountService(AccountsRepository repo)
@@ -36,5 +36,6 @@ namespace Keepr.Services
             original.Picture = editData.Picture.Length > 0 ? editData.Picture : original.Picture;
             return _repo.Edit(original);
         }
-    }
+
+  }
 }

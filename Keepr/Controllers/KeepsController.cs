@@ -33,7 +33,7 @@ namespace Keepr.Controllers
       }
     }
     [HttpGet("{id}")]
-    public async Task<ActionResult<Task>> GetOne(int id)
+    public async Task<ActionResult<Keep>> GetOne(int id)
     {
       try
       {

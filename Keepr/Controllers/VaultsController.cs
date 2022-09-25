@@ -32,7 +32,6 @@ namespace Keepr.Controllers
         return BadRequest(e.Message);
       }
     }
-    // NOTE trying something new here
     [HttpGet("{id}/keeps")]
     public async Task<ActionResult<List<Keep>>> GetKeeps(int id)
     {
