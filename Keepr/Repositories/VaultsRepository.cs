@@ -39,6 +39,21 @@ namespace Keepr.Repositories
       a.*
       FROM vaults v
       JOIN accounts a ON v.creatorId = a.id
+      WHERE v.creatorId = @id AND
+      v.isPrivate = false;";
+      return _db.Query<Vault, Profile, Vault>(sql, (v, profile) => {
+        v.Creator = profile;
+        return v;
+      }, new { id }).ToList();
+    }
+    internal List<Vault> GetAccountVaults(string id)
+    {
+      string sql = @"
+      SELECT
+      v.*,
+      a.*
+      FROM vaults v
+      JOIN accounts a ON v.creatorId = a.id
       WHERE v.creatorId = @id;";
       return _db.Query<Vault, Profile, Vault>(sql, (v, profile) => {
         v.Creator = profile;
@@ -70,6 +85,7 @@ namespace Keepr.Repositories
       _db.Execute(sql, update);
       return update;
     }
+
 
     internal void Delete(int id)
     {
