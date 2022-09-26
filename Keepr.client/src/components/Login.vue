@@ -1,29 +1,38 @@
 <template>
   <span class="navbar-text">
     <button
-      class="btn selectable text-success lighten-30 text-uppercase my-2 my-lg-0"
+      class="btn selectable text-dark text-uppercase my-2 my-lg-0"
       @click="login"
       v-if="!user.isAuthenticated"
     >
       Login
     </button>
 
-    <div class="dropdown my-2 my-lg-0" v-else>
+    <div class="dropdown my-2 my-lg-0 smaller" v-else>
       <div
         class="dropdown-toggle selectable"
         data-bs-toggle="dropdown"
         aria-expanded="false"
         id="authDropdown"
       >
-        <div v-if="account.picture || user.picture">
+        <div class="user-card rounded" id="user-card-text" v-if="account.picture || user.picture">
           <img
             :src="account.picture || user.picture"
             alt="account photo"
             height="40"
             class="rounded"
           />
-          <span class="mx-3 text-success lighten-30">{{ account.name || user.name }}</span>
+          <span class="mx-3 lighten-30">{{ account.name || user.name }}</span>
         </div>
+        <!-- <div id="user-picture">
+        <img
+            :src="account.picture || user.picture"
+            alt="account photo"
+            height="40"
+            class="rounded"
+            v-if="account.picture || user.picture"
+          />
+        </div> -->
       </div>
       <div
         class="dropdown-menu p-0 list-group w-100"
@@ -81,4 +90,24 @@ export default {
 .hoverable {
   cursor: pointer;
 }
+.user-card {
+  background-color: #636E72;
+  color: white;
+}
+// @media screen and (max-width: 600px) {
+//     #user-card-text {
+//         visibility: hidden;
+//     }
+//     #user-picture {
+//       visibility: visible;
+//     }
+// }
+// @media screen and (min-width: 600px) {
+//     #user-card-text {
+//         visibility: visible;
+//     }
+//     #user-picture {
+//       visibility: hidden;
+//     }
+// }
 </style>

@@ -1,36 +1,61 @@
 <template>
-  <div class="home flex-grow-1 d-flex flex-column align-items-center justify-content-center">
-    <div class="home-card p-5 bg-white rounded elevation-3">
-      <img src="https://bcw.blob.core.windows.net/public/img/8600856373152463" alt="CodeWorks Logo" class="rounded-circle">
-      <h1 class="my-5 bg-dark text-white p-3 rounded text-center">
-        Vue 3 Starter
-      </h1>
+  <div class="container">
+    <div v-for="k in keeps" :key="k.id">
+      <KeepCard :keep="k"/>
     </div>
   </div>
 </template>
 
 <script>
+import { AppState } from '../AppState';
+import { keepsService } from '../services/KeepsService';
+import KeepCard from '../components/KeepCard.vue';
+import { logger } from '../utils/Logger';
+import { onMounted } from 'vue';
+import { computed } from '@vue/reactivity';
 export default {
-  name: 'Home'
+    name: "Home",
+    setup() {
+      async function getKeeps() {
+        try {
+          await keepsService.getKeeps();
+        } catch (error) {
+          logger.error(error)
+        }
+      }
+      onMounted(() => {
+        getKeeps();
+      })
+      return {
+        keeps: computed(() => AppState.keeps)
+      };
+    },
+    components: { KeepCard }
 }
 </script>
 
 <style scoped lang="scss">
-.home{
-  display: grid;
-  height: 80vh;
-  place-content: center;
-  text-align: center;
-  user-select: none;
-  .home-card{
-    width: 50vw;
-    > img{
-      height: 200px;
-      max-width: 200px;
-      width: 100%;
-      object-fit: contain;
-      object-position: center;
-    }
+
+@media only screen and (max-width: 768px) {
+  .container {
+    column-count: 2;
+    column-gap: 10px;
   }
 }
+@media only screen and (min-width: 769px) and (max-width: 991px){
+  .container {
+    column-count: 3;
+    column-gap: 10px;
+  }
+}
+@media only screen and (min-width: 992px) {
+  .container {
+    column-count: 4;
+    column-gap: 10px;
+  }
+}
+// .container {
+//     column-count: 3;
+//     column-gap: 10px;
+//   }
 </style>

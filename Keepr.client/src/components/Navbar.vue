@@ -1,11 +1,11 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-green px-3 mb-3">
     <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }">
       <div class="d-flex flex-column align-items-center">
-        <img alt="logo" src="../assets/img/cw-logo.png" height="45" />
+        <h4 class="m-0 p-1 px-2 logo">K</h4>
       </div>
     </router-link>
-    <button
+    <!-- <button
       class="navbar-toggler"
       type="button"
       data-bs-toggle="collapse"
@@ -15,21 +15,21 @@
       aria-label="Toggle navigation"
     >
       <span class="navbar-toggler-icon" />
-    </button>
-    <div class="collapse navbar-collapse" id="navbarText">
-      <ul class="navbar-nav me-auto">
-        <li>
-          <router-link
+    </button> -->
+    <!-- <div class="collapse navbar-collapse" id="navbarText"> -->
+      <!-- <ul class="navbar-nav me-auto"> -->
+        <!-- <li> -->
+          <!-- <router-link
             :to="{ name: 'About' }"
             class="btn text-success lighten-30 selectable text-uppercase"
           >
             About
-          </router-link>
-        </li>
-      </ul>
+          </router-link> -->
+        <!-- </li> -->
+      <!-- </ul> -->
       <!-- LOGIN COMPONENT HERE -->
       <Login />
-    </div>
+    <!-- </div> -->
   </nav>
 </template>
 
@@ -52,5 +52,15 @@ a:hover {
   border-bottom: 2px solid var(--bs-success);
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
+}
+.navbar {
+  justify-content: space-between !important;
+}
+.logo {
+  border: 1px solid #636E72;
+  color: #636E72;
+}
+nav {
+  background-color: #55EFC4;
 }
 </style>
