@@ -14,9 +14,11 @@ namespace Keepr.Controllers
   public class VaultKeepsController : ControllerBase
   {
     private readonly VaultKeepsService _vaultKeepsService;
-    public VaultKeepsController(VaultKeepsService vaultKeepsService)
+    private readonly KeepsService _keepsService;
+    public VaultKeepsController(VaultKeepsService vaultKeepsService, KeepsService keepsService)
     {
       _vaultKeepsService = vaultKeepsService;
+      _keepsService = keepsService;
     }
     [HttpGet]
     public ActionResult<List<VaultKeep>> GetAll()
@@ -44,17 +46,42 @@ namespace Keepr.Controllers
         return BadRequest(e.Message);
       }
     }
+    // [HttpPost]
+    // [Authorize]
+    // public async Task<ActionResult<VaultKeepViewModel>> Create([FromBody] VaultKeep newVaultKeep)
+    // {
+    //   try
+    //   {
+    //     Account user = await HttpContext.GetUserInfoAsync<Account>();
+    //     newVaultKeep.CreatorId = user.Id;
+    //     newVaultKeep.Creator = user;
+        
+    //     VaultKeepViewModel keep = _vaultKeepsService.Create(newVaultKeep, user.Id);
+    //     // keep.Creator = user;
+    //     // keep.VaultKeepId = newVaultKeep.KeepId;
+    //     return Ok(keep);
+    //   }
+    //   catch (Exception e)
+    //   {
+    //     return BadRequest(e.Message);
+    //   }
+    // }
     [HttpPost]
     [Authorize]
-    public async Task<ActionResult<VaultKeepViewModel>> Create([FromBody] VaultKeep newVaultKeep)
+    public async Task<ActionResult<VaultKeep>> Create([FromBody] VaultKeep newVaultKeep)
     {
       try
       {
         Account user = await HttpContext.GetUserInfoAsync<Account>();
         newVaultKeep.CreatorId = user.Id;
-        VaultKeepViewModel keep = _vaultKeepsService.Create(newVaultKeep, user.Id);
-        keep.Creator = user;
-        return Ok(keep);
+        newVaultKeep.Creator = user;
+        VaultKeep vaultKeep = _vaultKeepsService.Create(newVaultKeep, user?.Id);
+        // Keep keep = _keepsService.GetViewModelById(newVaultKeep.KeepId);
+        // keep.Kept += 1;
+        // VaultKeepViewModel keep = _vaultKeepsService.Create(newVaultKeep, user.Id);
+        // keep.Creator = user;
+        // keep.VaultKeepId = newVaultKeep.KeepId;
+        return Ok(vaultKeep);
       }
       catch (Exception e)
       {

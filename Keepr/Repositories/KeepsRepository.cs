@@ -116,5 +116,15 @@ namespace Keepr.Repositories
       DELETE FROM keeps WHERE id = @id;";
       _db.Execute(sql, new { id });
     }
+
+    // internal Keep UpdateKept(Keep keep, string creatorId)
+    // {
+    //   string sql = @"
+    //   UPDATE keeps SET
+    //   kept = @keep.kept
+    //   WHERE id = @keep.id;";
+    //   _db.Execute(sql, keep);
+    //   return keep;
+    // }
   }
 }

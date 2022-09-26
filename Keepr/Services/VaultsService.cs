@@ -9,10 +9,12 @@ namespace Keepr.Services
   {
     private readonly VaultsRepository _vaultsRepo;
     private readonly KeepsRepository _keepsRepo;
-    public VaultsService(VaultsRepository vaultsRepo, KeepsRepository keepsRepo)
+    private readonly VaultKeepsRepository _vaultKeepsRepo;
+    public VaultsService(VaultsRepository vaultsRepo, KeepsRepository keepsRepo, VaultKeepsRepository vaultKeepsRepo)
     {
       _vaultsRepo = vaultsRepo;
       _keepsRepo = keepsRepo;
+      _vaultKeepsRepo = vaultKeepsRepo;
     }
 
     internal Vault GetOne(int id, string userId)
@@ -52,6 +54,30 @@ namespace Keepr.Services
       return _vaultsRepo.Update(original);
     }
 
+    internal List<VaultKeepViewModel> GetKeepsByVaultId(int id, string userId)
+    {
+      Vault vault =  _vaultsRepo.GetById(id);
+      if(vault.IsPrivate == true && vault.CreatorId == userId)
+      {
+        return _vaultKeepsRepo.GetKeepsByVaultId(id);
+      } else if (vault.IsPrivate == false) 
+      {
+        return _vaultKeepsRepo.GetKeepsByVaultId(id);
+      } else 
+      {
+        throw new Exception("You are not authorized to view the keeps in this vault.");
+      }
+    }
+
+    internal Vault GetById(int id)
+    {
+      Vault vault = _vaultsRepo.GetById(id);
+      if (vault == null)
+      {
+        throw new Exception("No vault by that ID.");
+      }
+      return vault;
+    }
 
     internal string Delete(int id, Account user)
     {

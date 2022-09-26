@@ -44,7 +44,26 @@ namespace Keepr.Repositories
       }, new { id }).FirstOrDefault();
     }
 
-    internal int Create(VaultKeep newVaultKeep)
+    internal List<VaultKeepViewModel> GetKeepsByVaultId(int vaultId)
+    {
+      string sql = @"
+      SELECT
+      vK.*,
+      k.*,
+      a.*
+      FROM vaultKeeps vK
+      JOIN keeps k ON vK.keepId = k.id
+      JOIN accounts a ON k.creatorId = a.id
+      WHERE vK.vaultId = @vaultId;";
+      List<VaultKeepViewModel> keeps = _db.Query<VaultKeep, VaultKeepViewModel, Account, VaultKeepViewModel>(sql, (vK, k, a) => {
+        k.Creator = a;
+        k.VaultKeepId = vK.Id;
+        return k;
+      }, new { vaultId }).ToList();
+      return keeps;
+    }
+
+    internal VaultKeep Create(VaultKeep newVaultKeep)
     {
       string sql = @"
       INSERT INTO vaultKeeps
@@ -54,8 +73,34 @@ namespace Keepr.Repositories
       SELECT LAST_INSERT_ID();";
       int id = _db.ExecuteScalar<int>(sql, newVaultKeep);
       newVaultKeep.Id = id;
-      return id;
+      return newVaultKeep;
     }
+
+    // internal int Create(VaultKeep newVaultKeep)
+    // {
+    //   string sql = @"
+    //   INSERT INTO vaultKeeps
+    //   (creatorId, vaultId, keepId)
+    //   VALUES
+    //   (@creatorId, @vaultId, @keepId);
+    //   SELECT LAST_INSERT_ID();";
+    //   int id = _db.ExecuteScalar<int>(sql, newVaultKeep);
+    //   newVaultKeep.Id = id;
+    //   return id;
+    // }
+
+    // internal int Create(VaultKeep newVaultKeep)
+    // {
+    //   string sql = @"
+    //   INSERT INTO vaultKeeps
+    //   (creatorId, vaultId, keepId)
+    //   VALUES
+    //   (@creatorId, @vaultId, @keepId);
+    //   SELECT LAST_INSERT_ID();";
+    //   int id = _db.ExecuteScalar<int>(sql, newVaultKeep);
+    //   // newVaultKeep.Id = id;
+    //   return id;
+    // }
 
     internal void Delete(int id)
     {

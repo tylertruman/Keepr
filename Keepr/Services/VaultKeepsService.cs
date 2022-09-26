@@ -10,11 +10,13 @@ namespace Keepr.Services
     private readonly VaultKeepsRepository _vaultKeepsRepo;
     private readonly VaultsService _vaultsService;
     private readonly KeepsService _keepsService;
-    public VaultKeepsService(VaultKeepsRepository vaultKeepsRepo, VaultsService vaultsService, KeepsService keepsService)
+    private readonly KeepsRepository _keepsRepo;
+    public VaultKeepsService(VaultKeepsRepository vaultKeepsRepo, VaultsService vaultsService, KeepsService keepsService, KeepsRepository keepsRepo)
     {
       _vaultKeepsRepo = vaultKeepsRepo;
       _vaultsService = vaultsService;
       _keepsService = keepsService;
+      _keepsRepo = keepsRepo;
     }
 
     internal List<VaultKeep> GetAll()
@@ -30,18 +32,39 @@ namespace Keepr.Services
       }
       return vaultKeep;
     }
-    internal VaultKeepViewModel Create(VaultKeep newVaultKeep, string userId)
-    {
-      Vault vault = _vaultsService.GetOne(newVaultKeep.VaultId, userId);
-      if(vault.CreatorId != userId)
-      {
-        throw new Exception("You are not authorized");
-      }
-      int id = _vaultKeepsRepo.Create(newVaultKeep);
-      VaultKeepViewModel vaultKeep = _keepsService.GetViewModelById(newVaultKeep.KeepId);
-      vaultKeep.VaultKeepId = id;
-      return vaultKeep;
-    }
+    // internal List<Keep> GetKeepsByVaultId(int id, string userId)
+    // {
+    //   Vault vault =  _vaultsRepo.GetById(id);
+    //   if(vault.IsPrivate == true && vault.CreatorId == userId)
+    //   {
+    //     return _vaultKeepsRepo.GetKeepsByVaultId(vaultId);
+    //   }
+    // }
+    // internal async List<VaultKeepViewModel> GetKeepsByVaultId(int vaultId)
+    // {
+    //   return _vaultKeepsRepo.GetKeepsByVaultId(vaultId);
+    // }
+    // internal VaultKeepViewModel Create(VaultKeep newVaultKeep, string userId)
+    // {
+    //   Vault vault = _vaultsService.GetById(newVaultKeep.VaultId);
+    //   if(vault.CreatorId != userId)
+    //   {
+    //     throw new Exception("You are not authorized");
+    //   }
+    //   // NOTE not sure if this will work v
+    //   // Keep keep = _keepsService.GetOne(newVaultKeep.KeepId);
+      
+    //   // v NOTE not sure if this will work.
+    //   // newVaultKeep.VaultId = vault.Id; 
+    //   // newVaultKeep.KeepId = keep.Id;
+    //   int id = _vaultKeepsRepo.Create(newVaultKeep);
+    //   VaultKeepViewModel vaultKeep = _keepsService.GetViewModelById(newVaultKeep.KeepId);
+    //   // vaultKeep.VaultKeepId = id;
+    //   // vaultKeep.Id = id; YO
+    //   // return vaultKeep;
+    //   // return vaultKeep; YO
+    //   return vaultKeep;
+    // }
 
     internal string Delete(int id, string userId)
     {
@@ -54,5 +77,17 @@ namespace Keepr.Services
       return "The vault keep has been deleted.";
     }
 
+    internal VaultKeep Create(VaultKeep newVaultKeep, string userId)
+    {
+      Vault vault = _vaultsService.GetById(newVaultKeep.VaultId);
+      if(vault.CreatorId != userId)
+      {
+        throw new Exception("You are not authorized to add a keep to a vault you don't own.");
+      }
+      // Keep keep = _keepsService.GetViewModelById(newVaultKeep.KeepId);
+      // keep.Kept++;
+      // keep = _keepsRepo.UpdateKept(keep, keep.CreatorId);
+      return _vaultKeepsRepo.Create(newVaultKeep);
+    }
   }
 }
