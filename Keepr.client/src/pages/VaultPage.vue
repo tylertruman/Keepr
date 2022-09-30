@@ -5,7 +5,7 @@
     <p class="px-4">Keeps: {{keeps.length}}</p>
   </div>
   <div class="col-5 text-end">
-    <button class="btn btn-secondary" @click="deleteVault()">Delete Vault</button>
+    <button v-if="vault.creatorId == account.id" class="btn btn-secondary" @click="deleteVault()">Delete Vault</button>
   </div>
 </section>
 <div class="container pt-3">
@@ -106,4 +106,5 @@ export default {
     column-gap: 10px;
   }
 }
+
 </style>

@@ -24,5 +24,6 @@ export default {
 @import "./assets/scss/main.scss";
 body {
   padding-bottom: 10px;
+  overflow-x: hidden;
 }
 </style>
