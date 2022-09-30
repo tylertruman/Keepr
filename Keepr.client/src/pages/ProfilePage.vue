@@ -11,12 +11,22 @@
       </div>
     </section>
     <section class="row">
-      <h4 class="pt-5">Vaults <span class="selectable text-success">+</span></h4>
+      <h4 class="pt-5">Vaults <span v-if="profile.id == account.id" class="selectable text-success" @click="newVaultModal()">+</span></h4>
       <div class="col-4" v-for="v in vaults" :key="v.id">
         <VaultCard :vault="v"/>
       </div>
     </section>
+    <section class="row">
+      <h4 class="pt-5">Keeps <span v-if="profile.id == account.id" class="selectable text-success" @click="newKeepModal()">+</span></h4>
+      <div class="container-fluid">
+        <div v-for="k in keeps" :key="k.id">
+          <KeepCard :keep="k"/>
+        </div>
+      </div>
+    </section>
   </div>
+  <NewKeepModal/>
+  <NewVaultModal/>
 </template>
 
 <script>
@@ -29,6 +39,10 @@ import { keepsService } from '../services/KeepsService';
 import { profilesService } from '../services/ProfilesService';
 import { vaultsService } from '../services/VaultsService';
 import { logger } from '../utils/Logger';
+import KeepCard from '../components/KeepCard.vue';
+import { Modal } from 'bootstrap';
+import NewKeepModal from '../components/NewKeepModal.vue';
+import NewVaultModal from '../components/NewVaultModal.vue';
 
 export default {
     setup() {
@@ -60,15 +74,47 @@ export default {
         getVaultsByProfile();
       })
         return {
+            account: computed(() => AppState.account),
             profile: computed(() => AppState.profile),
             keeps: computed(() => AppState.profileKeeps),
-            vaults: computed(() => AppState.vaults)
+            vaults: computed(() => AppState.vaults),
+            async newVaultModal() {
+              try {
+                Modal.getOrCreateInstance(document.getElementById("newVaultModal")).toggle();
+              } catch (error) {
+                logger.error(error)
+              }
+            },
+            async newKeepModal() {
+              try {
+                Modal.getOrCreateInstance(document.getElementById("newKeepModal")).toggle();
+              } catch (error) {
+                logger.error(error)
+              }
+            }
         };
     },
-    components: { VaultCard }
+    components: { VaultCard, KeepCard, NewKeepModal, NewVaultModal }
 };
 </script>
 
-<style>
-
+<style scoped>
+@media only screen and (max-width: 768px) {
+  .container-fluid {
+    column-count: 2;
+    column-gap: 10px;
+  }
+}
+@media only screen and (min-width: 769px) and (max-width: 991px){
+  .container-fluid {
+    column-count: 3;
+    column-gap: 10px;
+  }
+}
+@media only screen and (min-width: 992px) {
+  .container-fluid {
+    column-count: 4;
+    column-gap: 10px;
+  }
+}
 </style>

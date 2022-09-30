@@ -74,6 +74,9 @@ namespace Keepr.Services
         throw new Exception("You are not authorized to delete this vault keep.");
       }
       _vaultKeepsRepo.Delete(id);
+      Keep keep = _keepsService.GetOne(original.KeepId);
+      keep.Kept--;
+      _keepsRepo.UpdateKept(keep);
       return "The vault keep has been deleted.";
     }
 
@@ -84,8 +87,9 @@ namespace Keepr.Services
       {
         throw new Exception("You are not authorized to add a keep to a vault you don't own.");
       }
-      // Keep keep = _keepsService.GetViewModelById(newVaultKeep.KeepId);
-      // keep.Kept++;
+      Keep keep = _keepsService.GetOne(newVaultKeep.KeepId);
+      keep.Kept++;
+      _keepsRepo.UpdateKept(keep);
       // keep = _keepsRepo.UpdateKept(keep, keep.CreatorId);
       return _vaultKeepsRepo.Create(newVaultKeep);
     }

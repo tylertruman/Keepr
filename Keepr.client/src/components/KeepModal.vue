@@ -30,8 +30,8 @@
             <span class="col-5 align-self-center">{{keep.creator?.name}}</span>
           </div> -->
           <div class="row justify-content-center align-content-center text-center">
-            <button class="btn btn-info col-3">Add To Vault</button>
-            <span class="selectable text-danger align-self-center px-3 col-1">X</span>
+            <button class="btn btn-info col-3" @click="addKeepToVault()">Add To Vault</button>
+            <span class="selectable text-danger align-self-center px-3 col-1" v-if="keep.creatorId == account.id" @click="deleteKeep()">X</span>
             <!-- <router-link :to="{ name: 'Profile', params: { profileId: keep.creatorId } }">
               <img class="rounded p-0 selectable col-3" :src="keep.creator?.picture" alt="Keep Creator Info" height="50" >
               <span class="align-self-center col-3">{{keep.creator?.name}}</span>
@@ -50,18 +50,43 @@ import { router } from '../router';
 import { computed } from '@vue/reactivity';
 import { AppState } from '../AppState';
 import { logger } from '../utils/Logger';
+import Pop from '../utils/Pop';
+import { keepsService } from '../services/KeepsService';
 
 export default {
 setup() {
   return {
-    profilePush() {
+    async profilePush() {
       try {
         router.push({name: 'Profile', params: { profileId: this.keep.creatorId}})
       } catch (error) {
         logger.error(error)
       }
     },
-    keep: computed(() => AppState.activeKeep)
+    async deleteKeep() {
+      try {
+        if(AppState.account.id != AppState.activeKeep.creatorId) {
+          throw new Error('You are not the owner of this keep!')
+        }
+        const yes = await Pop.confirm('Delete the Keep?')
+        if(!yes) {return}
+        await keepsService.delete(AppState.activeKeep.id);
+        Pop.success('Keep deleted successfully!')
+      } catch (error) {
+        logger.error(error)
+        Pop.error(error)
+      }
+    },
+    // async addKeepToVault() {
+    //   try {
+        
+    //   } catch (error) {
+    //     logger.error(error)
+    //     Pop.error(error)
+    //   }
+    // },
+    keep: computed(() => AppState.activeKeep),
+    account: computed(() => AppState.account)
   };
 },
 };

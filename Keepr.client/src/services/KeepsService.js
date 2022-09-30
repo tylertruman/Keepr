@@ -18,6 +18,14 @@ class KeepsService {
     const res = await api.get(`api/vaults/${vaultId}/keeps`)
     AppState.activeVaultKeeps = res.data
   }
+  async create(newKeep) {
+    const res = await api.post('api/keeps', newKeep)
+    AppState.keeps.push(res.data)
+  }
+  async delete(keepId) {
+    const res = await api.delete(`api/keeps/${keepId}`)
+    AppState.keeps = AppState.keeps.filter(k => k.id != keepId)
+  }
 }
 
 export const keepsService = new KeepsService()

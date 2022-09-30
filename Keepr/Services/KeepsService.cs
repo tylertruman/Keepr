@@ -24,6 +24,8 @@ namespace Keepr.Services
       {
         throw new Exception("no keep by that id");
       }
+      keep.Views++;
+      _keepsRepo.UpdateViews(keep);
       return keep;
     }
     internal VaultKeepViewModel GetViewModelById(int keepId)
@@ -33,6 +35,8 @@ namespace Keepr.Services
       {
         throw new Exception("No keep by that ID.");
       }
+      keep.Views++;
+      _keepsRepo.UpdateViews(keep);
       return keep;
     }
     internal Keep Create(Keep newKeep)

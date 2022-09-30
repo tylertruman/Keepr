@@ -28,6 +28,7 @@ ALTER TABLE vaultKeeps DROP FOREIGN KEY vaultKeeps_ibfk_3;
 
 ALTER TABLE keeps ADD FOREIGN KEY (vaultKeepId) REFERENCES vaultKeeps(id) ON DELETE CASCADE;
 SELECT * FROM keeps;
+SELECT * FROM keeps WHERE id = 705;
 SELECT * FROM vaults;
 SELECT * FROM vaultKeeps;
 DROP TABLE keeps;

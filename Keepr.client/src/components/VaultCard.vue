@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import { AppState } from '../AppState';
 import { router } from '../router';
 import { logger } from '../utils/Logger';
 
@@ -21,7 +22,10 @@ setup(props) {
   return {
     async goTo() {
       try {
-        router.push({ name: 'Vault', params: { vaultId: this.vault.id }})
+        if(props.vault.isPrivate == true && AppState.account.id != props.vault.creatorId) {
+          router.push({name: 'Home'})
+        }
+        router.push({ name: 'Vault', params: { vaultId: props.vault.id }})
       } catch (error) {
         logger.error(error)
       }

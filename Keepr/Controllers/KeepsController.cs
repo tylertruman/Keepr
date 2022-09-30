@@ -39,7 +39,7 @@ namespace Keepr.Controllers
       {
         Account user = await HttpContext.GetUserInfoAsync<Account>();
         Keep keep = _keepsService.GetOne(id);
-        keep.Views++;
+        // keep.Views++;
         return Ok(keep);
       }
       catch (Exception e)

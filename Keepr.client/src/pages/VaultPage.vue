@@ -5,7 +5,7 @@
     <p>Keeps: {{keeps.length}}</p>
   </div>
   <div class="col-6 text-end">
-    <button class="btn btn-primary">Delete Vault</button>
+    <button class="btn btn-primary" @click="deleteVault()">Delete Vault</button>
   </div>
 </section>
 <div class="container">
@@ -21,9 +21,11 @@ import { onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { AppState } from '../AppState';
 import KeepCard from '../components/KeepCard.vue';
+import { router } from '../router';
 import { keepsService } from '../services/KeepsService';
 import { vaultsService } from '../services/VaultsService';
 import { logger } from '../utils/Logger';
+import Pop from '../utils/Pop';
 export default {
     setup() {
       const route = useRoute();
@@ -47,7 +49,21 @@ export default {
       })
         return {
           keeps: computed(() => AppState.activeVaultKeeps),
-          vault: computed(() => AppState.activeVault)
+          vault: computed(() => AppState.activeVault),
+          async deleteVault() {
+            try {
+              if(AppState.account.id != AppState.activeVault.creatorId){
+                throw new Error('You are not the owner of this vault!')
+              }
+              const yes = await Pop.confirm('Delete the Vault?')
+              if(!yes) {return}
+              await vaultsService.delete(route.params.vaultId);
+              Pop.success('Vault deleted successfully!')
+            } catch (error) {
+              logger.error(error)
+              Pop.error(error)
+            }
+          }
         };
     },
     components: { KeepCard }

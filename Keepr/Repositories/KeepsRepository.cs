@@ -117,14 +117,23 @@ namespace Keepr.Repositories
       _db.Execute(sql, new { id });
     }
 
-    // internal Keep UpdateKept(Keep keep, string creatorId)
-    // {
-    //   string sql = @"
-    //   UPDATE keeps SET
-    //   kept = @keep.kept
-    //   WHERE id = @keep.id;";
-    //   _db.Execute(sql, keep);
-    //   return keep;
-    // }
+    internal Keep UpdateViews(Keep keep)
+    {
+      string sql = @"
+      UPDATE keeps SET
+      views = @views
+      WHERE id = @id;";
+      _db.Execute(sql, keep);
+      return keep;
+    }
+    internal Keep UpdateKept(Keep keep)
+    {
+      string sql = @"
+      UPDATE keeps SET
+      kept = @kept
+      WHERE id = @id;";
+      _db.Execute(sql, keep);
+      return keep;
+    }
   }
 }
