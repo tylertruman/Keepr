@@ -1,7 +1,7 @@
 <template>
-  <div class="selectable rounded " @click="goTo()">
-    <div class="">
-      <h6 class="text-center">{{vault.name}}</h6>
+  <div class="selectable rounded bg-green" @click="goTo()">
+    <div class="pt-5">
+      <h6 class="text-center pt-3">{{vault.name}}</h6>
     </div>
   </div>
 </template>
@@ -39,5 +39,8 @@ setup(props) {
 div {
   height: 150px;
   width: 150px;
+}
+.bg-green {
+  background-color: #55EFC4;
 }
 </style>

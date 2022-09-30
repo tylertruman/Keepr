@@ -21,6 +21,22 @@
               </div>
               <hr>
               </div>
+              <section class="row sticky-bottom">
+              <div class="dropdown col-4 mt-1">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Add to Vault
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+    <button class="dropdown-item" v-for="v in vaults" :key="v.id" :value="v.name" @click="addKeepToVault(v)"></button>
+    <!-- <button class="dropdown-item" type="button">Action</button>
+    <button class="dropdown-item" type="button">Another action</button>
+    <button class="dropdown-item" type="button">Something else here</button> -->
+  </div>
+</div>
+<span class="selectable text-danger align-self-center px-3 col-1" v-if="keep.creatorId == account.id" @click="deleteKeep()">X</span>
+<img class="rounded p-0 selectable offset-1 col-1" :src="keep.creator?.picture" alt="Keep Creator Info" height="50" width="50" @click="profilePush()" :title="keep.creator?.name">
+              <span class="align-self-center col-3 selectable" @click="profilePush()" >{{keep.creator?.name}}</span>
+</section>
             </div>
           </div>
           <!-- <div class="row justify-content-center align-content-center">
@@ -29,16 +45,28 @@
             <img class="rounded col-2 p-0 selectable" :src="keep.creator?.picture" alt="Keep Creator Info" height="50" >
             <span class="col-5 align-self-center">{{keep.creator?.name}}</span>
           </div> -->
-          <div class="row justify-content-center align-content-center text-center">
-            <button class="btn btn-info col-3" @click="addKeepToVault()">Add To Vault</button>
-            <span class="selectable text-danger align-self-center px-3 col-1" v-if="keep.creatorId == account.id" @click="deleteKeep()">X</span>
+          <!-- <div class="row justify-content-center align-content-center text-center"> -->
+            
+            <!-- <div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Add to Vault
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+    <button class="dropdown-item" v-for="v in vaults" :key="v.id" :value="v.name" @click="addKeepToVault(v)"></button> -->
+    <!-- <button class="dropdown-item" type="button">Action</button>
+    <button class="dropdown-item" type="button">Another action</button>
+    <button class="dropdown-item" type="button">Something else here</button> -->
+  <!-- </div> -->
+<!-- </div> -->
+
+            <!-- <span class="selectable text-danger align-self-center px-3 col-1" v-if="keep.creatorId == account.id" @click="deleteKeep()">X</span> -->
             <!-- <router-link :to="{ name: 'Profile', params: { profileId: keep.creatorId } }">
               <img class="rounded p-0 selectable col-3" :src="keep.creator?.picture" alt="Keep Creator Info" height="50" >
               <span class="align-self-center col-3">{{keep.creator?.name}}</span>
             </router-link> -->
-            <img class="rounded p-0 selectable col-3" :src="keep.creator?.picture" alt="Keep Creator Info" height="50" @click="profilePush()" >
-              <span class="align-self-center col-3" @click="profilePush()" >{{keep.creator?.name}}</span>
-          </div>
+            <!-- <img class="rounded p-0 selectable col-3" :src="keep.creator?.picture" alt="Keep Creator Info" height="50" @click="profilePush()" > -->
+              <!-- <span class="align-self-center col-3" @click="profilePush()" >{{keep.creator?.name}}</span> -->
+          <!-- </div> -->
         </div>
     </div>
   </div>
@@ -52,13 +80,28 @@ import { AppState } from '../AppState';
 import { logger } from '../utils/Logger';
 import Pop from '../utils/Pop';
 import { keepsService } from '../services/KeepsService';
+import { vaultsService } from '../services/VaultsService';
+import { onMounted } from 'vue';
 
 export default {
 setup() {
+  // async function getVaultsByAccount() {
+  //     try {
+  //       await vaultsService.getVaultsByAccount();
+  //     } catch (error) {
+  //       logger.error(error)
+  //       Pop.error(error)
+  //     }
+  //   }
+  //   onMounted(() => {
+  //     getVaultsByAccount();
+  //   })
   return {
+    vaults: computed(() => AppState.accountVaults),
     async profilePush() {
       try {
         router.push({name: 'Profile', params: { profileId: this.keep.creatorId}})
+        Modal.getOrCreateInstance(document.getElementById('keepModal')).hide()
       } catch (error) {
         logger.error(error)
       }
@@ -93,7 +136,8 @@ setup() {
 </script>
 
 <style scoped>
-/* .modal {
-  height: 100vh !important;
-} */
+.sticky-bottom {
+  position: absolute;
+  bottom: 7px;
+}
 </style>

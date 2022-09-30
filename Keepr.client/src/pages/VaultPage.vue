@@ -1,14 +1,14 @@
 <template>
-<section class="row">
-  <div class="col-6 text-start">
-    <h1>{{vault.name}}</h1>
-    <p>Keeps: {{keeps.length}}</p>
+<section class="row pt-5">
+  <div class="col-5 offset-1 text-start px-5">
+    <h1 class="px-4">{{vault.name}}</h1>
+    <p class="px-4">Keeps: {{keeps.length}}</p>
   </div>
-  <div class="col-6 text-end">
-    <button class="btn btn-primary" @click="deleteVault()">Delete Vault</button>
+  <div class="col-5 text-end">
+    <button class="btn btn-secondary" @click="deleteVault()">Delete Vault</button>
   </div>
 </section>
-<div class="container">
+<div class="container pt-3">
   <div v-for="k in keeps" :key="k.id">
     <KeepCard :keep="k"/>
   </div>

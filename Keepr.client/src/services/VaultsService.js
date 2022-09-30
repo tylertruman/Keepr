@@ -18,6 +18,10 @@ class VaultsService {
     const res = await api.delete(`api/vaults/${vaultId}`)
     AppState.vaults = AppState.vaults.filter(v => v.id != vaultId)
   }
+  async getVaultsByAccount() {
+    const res = await api.get('account/vaults')
+    AppState.accountVaults = res.data
+  }
 }
 
 export const vaultsService = new VaultsService()

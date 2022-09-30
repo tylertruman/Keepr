@@ -22,4 +22,7 @@ export default {
 </script>
 <style lang="scss">
 @import "./assets/scss/main.scss";
+body {
+  padding-bottom: 10px;
+}
 </style>

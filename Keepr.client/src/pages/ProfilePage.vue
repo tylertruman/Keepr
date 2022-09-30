@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <section class="row">
-      <div class="col-3">
+      <div class="col-2">
         <img class="rounded" :src="profile.picture" alt="">
       </div>
       <div class="col-9">
@@ -12,7 +12,7 @@
     </section>
     <section class="row">
       <h4 class="pt-5">Vaults <span v-if="profile.id == account.id" class="selectable text-success" @click="newVaultModal()">+</span></h4>
-      <div class="col-4" v-for="v in vaults" :key="v.id">
+      <div class="col-2 pt-3" v-for="v in vaults" :key="v.id">
         <VaultCard :vault="v"/>
       </div>
     </section>
