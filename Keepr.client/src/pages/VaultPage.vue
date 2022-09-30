@@ -11,6 +11,7 @@
 <div class="container pt-3">
   <div v-for="k in keeps" :key="k.id">
     <KeepCard :keep="k"/>
+    <!-- <span class="selectable text-danger" title="Remove Keep From Vault" @click="removeKeepFromVault(k.id)">X</span> -->
   </div>
 </div>
 </template>
@@ -34,6 +35,7 @@ export default {
           await vaultsService.getVaultById(route.params.vaultId);
         } catch (error) {
           logger.error(error)
+          router.push({name: 'Home'})
         }
       }
       async function getKeepsByVaultId() {
@@ -48,6 +50,7 @@ export default {
         getKeepsByVaultId();
       })
         return {
+          account: computed(() => AppState.account),
           keeps: computed(() => AppState.activeVaultKeeps),
           vault: computed(() => AppState.activeVault),
           async deleteVault() {
@@ -63,7 +66,20 @@ export default {
               logger.error(error)
               Pop.error(error)
             }
-          }
+          },
+          // async removeKeepFromVault(k) {
+          //   try {
+          //     if(AppState.account.id != AppState.activeVault.creatorId){
+          //       throw new Error('You are not the owner of this vault!')
+          //     }
+          //     const yes = await Pop.confirm('Remove the keep from the vault?')
+          //     if(!yes) {return}
+          //     await keepsService.removeKeepFromVault(k.id, AppState.activeVault.id)
+          //   } catch (error) {
+          //     logger.error(error)
+          //     Pop.error(error)
+          //   }
+          // }
         };
     },
     components: { KeepCard }

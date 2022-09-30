@@ -10,15 +10,15 @@
         <form @submit.prevent="createKeep()">
   <div class="mb-3">
     <label for="name" class="form-label">Name</label>
-    <input v-model="editable.name" type="text" class="form-control" id="name" aria-describedby="emailHelp">
+    <input v-model="editable.name" type="text" class="form-control" id="name" aria-describedby="emailHelp" required>
   </div>
   <div class="mb-3">
     <label for="img" class="form-label">Image URL</label>
-    <input v-model="editable.img" type="text" class="form-control" id="img" aria-describedby="emailHelp">
+    <input v-model="editable.img" type="text" class="form-control" id="img" aria-describedby="emailHelp" required>
   </div>
   <div class="mb-3">
   <label for="description" class="form-label">Description</label>
-  <textarea v-model="editable.description" class="form-control" id="description" rows="3"></textarea>
+  <textarea v-model="editable.description" class="form-control" id="description" rows="3" required></textarea>
 </div>
   <button type="submit" class="btn btn-primary">Create</button>
 </form>
@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import { Modal } from 'bootstrap';
 import { ref } from 'vue';
 import { AppState } from '../AppState';
 import { keepsService } from '../services/KeepsService';
@@ -48,6 +49,7 @@ setup() {
         await keepsService.create(editable.value);
         editable.value = {};
         Pop.success("Keep created successfully!")
+        Modal.getOrCreateInstance(document.getElementById("newKeepModal")).hide()
       } catch (error) {
         logger.error(error)
         Pop.error(error)

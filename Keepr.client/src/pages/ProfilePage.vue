@@ -4,20 +4,20 @@
       <div class="col-2">
         <img class="rounded" :src="profile.picture" alt="">
       </div>
-      <div class="col-9">
+      <div class="col-5">
         <h1 class="pb-2">{{profile.name}}</h1>
         <p class="my-1">Vaults: {{vaults.length}}</p>
         <p class="my-1">Keeps: {{keeps.length}}</p>
       </div>
     </section>
     <section class="row">
-      <h4 class="pt-5">Vaults <span v-if="profile.id == account.id" class="selectable text-success" @click="newVaultModal()">+</span></h4>
-      <div class="col-2 pt-3" v-for="v in vaults" :key="v.id">
+      <h4 class="pt-5">Vaults <span v-if="profile.id == account.id" class="selectable text-success" @click="newVaultModal()" title="Create Vault">+</span></h4>
+      <div class="col-5 col-sm-4 col-md-3 col-lg-2 pt-3" v-for="v in vaults" :key="v.id">
         <VaultCard :vault="v"/>
       </div>
     </section>
     <section class="row">
-      <h4 class="pt-5">Keeps <span v-if="profile.id == account.id" class="selectable text-success" @click="newKeepModal()">+</span></h4>
+      <h4 class="pt-5">Keeps <span v-if="profile.id == account.id" class="selectable text-success" @click="newKeepModal()" title="Create Keep">+</span></h4>
       <div class="container-fluid">
         <div v-for="k in keeps" :key="k.id">
           <KeepCard :keep="k"/>

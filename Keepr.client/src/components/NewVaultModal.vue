@@ -10,11 +10,11 @@
         <form @submit.prevent="createVault()">
   <div class="mb-3">
     <label for="name" class="form-label">Name</label>
-    <input v-model="editable.name" type="text" class="form-control" id="name" aria-describedby="emailHelp">
+    <input v-model="editable.name" type="text" class="form-control" id="name" aria-describedby="emailHelp" required>
   </div>
   <div class="mb-3">
   <label for="description" class="form-label">Description</label>
-  <textarea v-model="editable.description" class="form-control" id="description" rows="3"></textarea>
+  <textarea v-model="editable.description" class="form-control" id="description" rows="3" required></textarea>
 </div>
   <div class="mb-3 form-check">
     <input v-model="editable.isPrivate" type="checkbox" class="form-check-input" id="isPrivate">
@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import { Modal } from 'bootstrap';
 import { ref } from 'vue';
 import { AppState } from '../AppState';
 import { vaultsService } from '../services/VaultsService';
@@ -48,6 +49,7 @@ setup() {
         await vaultsService.create(editable.value);
         editable.value = {};
         Pop.success("Vault created successfully!")
+        Modal.getOrCreateInstance(document.getElementById("newVaultModal")).hide()
       } catch (error) {
         logger.error(error)
         Pop.error(error)

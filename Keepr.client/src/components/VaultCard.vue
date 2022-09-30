@@ -1,5 +1,5 @@
 <template>
-  <div class="selectable rounded bg-green" @click="goTo()">
+  <div class="selectable rounded bg-green" @click="goTo()" :title="vault.name">
     <div class="pt-5">
       <h6 class="text-center pt-3">{{vault.name}}</h6>
     </div>

@@ -7,10 +7,10 @@
         </div>
         <div class="modal-body ">
           <div class="row">
-            <div class="col-12 col-md-6">
+            <div class="col-12 col-lg-6">
               <img class="img-fluid rounded" :src="keep?.img" alt="">
             </div>
-            <div class="col-12 col-md-6">
+            <div class="col-12 col-lg-6">
               <div class="text-center">
                 <span class="mx-2">Views: {{keep?.views}}</span>
                 <span class="mx-2">Saves: {{keep?.kept}}</span>
@@ -19,22 +19,34 @@
               <div class="pt-2">
                 {{keep?.description}}
               </div>
-              <hr>
+              <hr class="mb-5">
               </div>
               <section class="row sticky-bottom">
-              <div class="dropdown col-4 mt-1">
+              <!-- <div class="dropdown col-4 mt-1">
   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     Add to Vault
   </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-    <button class="dropdown-item" v-for="v in vaults" :key="v.id" :value="v.name" @click="addKeepToVault(v)"></button>
-    <!-- <button class="dropdown-item" type="button">Action</button>
-    <button class="dropdown-item" type="button">Another action</button>
-    <button class="dropdown-item" type="button">Something else here</button> -->
+  <div class="dropdown-menu" aria-labelledby="dropdownMenu2"> -->
+    <!-- <button class="dropdown-item" v-for="v in vaults" :key="v.id" :value="v.name" @click="addKeepToVault(v)"></button> -->
+    <!-- <button class="dropdown-item" type="button" @click="addKeepToVault(vaults[0].id)">{{vaults[0]?.name}}</button>
+    <button class="dropdown-item" type="button" @click="addKeepToVault(vaults[1].id)">{{vaults[1]?.name}}</button>
+    <button class="dropdown-item" type="button" @click="addKeepToVault(vaults[2].id)">{{vaults[2]?.name}}</button>
   </div>
+</div> -->
+
+<div class="dropdown col-4">
+  <button disabled class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Add To Vault
+  </button>
+  <ul class="dropdown-menu">
+    <li class="dropdown-item selectable" @click="addKeepToVault()">Vault #1</li>
+    <!-- <li class="dropdown-item selectable" @click="addKeepToVault(vaults[1])">Vault #2</li> -->
+    <!-- <li class="dropdown-item selectable" @click="addKeepToVault(vaults[2])">Vault #3</li> -->
+  </ul>
 </div>
-<span class="selectable text-danger align-self-center px-3 col-1" v-if="keep.creatorId == account.id" @click="deleteKeep()">X</span>
-<img class="rounded p-0 selectable offset-1 col-1" :src="keep.creator?.picture" alt="Keep Creator Info" height="50" width="50" @click="profilePush()" :title="keep.creator?.name">
+
+<span class="selectable text-danger align-self-center px-3 col-1 offset-1" v-if="keep.creatorId == account.id" @click="deleteKeep()" title="Delete Keep">X</span>
+<img class="rounded p-0 selectable offset-1 col-1 mt-1" :src="keep.creator?.picture" alt="Keep Creator Info" height="35" @click="profilePush()" :title="keep.creator?.name">
               <span class="align-self-center col-3 selectable" @click="profilePush()" >{{keep.creator?.name}}</span>
 </section>
             </div>
@@ -82,6 +94,7 @@ import Pop from '../utils/Pop';
 import { keepsService } from '../services/KeepsService';
 import { vaultsService } from '../services/VaultsService';
 import { onMounted } from 'vue';
+import { Modal } from 'bootstrap';
 
 export default {
 setup() {
@@ -122,7 +135,7 @@ setup() {
     },
     // async addKeepToVault() {
     //   try {
-        
+    //     await vaultsService.addKeepToVault(AppState.activeVault.id, AppState.activeKeep.id)
     //   } catch (error) {
     //     logger.error(error)
     //     Pop.error(error)
