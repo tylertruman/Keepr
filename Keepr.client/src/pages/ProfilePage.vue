@@ -4,10 +4,10 @@
       <div class="col-2">
         <img class="rounded" :src="profile.picture" alt="">
       </div>
-      <div class="col-5">
-        <h1 class="pb-2">{{profile.name}}</h1>
-        <p class="my-1">Vaults: {{vaults.length}}</p>
-        <p class="my-1">Keeps: {{keeps.length}}</p>
+      <div class="col-5 px-5">
+        <h1 class="pb-2 mx-2">{{profile.name}}</h1>
+        <p class="my-1 mx-2">Vaults: {{vaults.length}}</p>
+        <p class="my-1 mx-2">Keeps: {{keeps.length}}</p>
       </div>
     </section>
     <section class="row">
