@@ -1,5 +1,5 @@
 <template>
-<figure class="selectable rounded" @click="setActive()">
+<figure class="selectable rounded elevation-2" @click="setActive()">
   <img class="keep-img rounded" :src="keep.img" alt="keep image" :title="keep.name">
   <h6 class="keep-name text-light">{{keep.name}} </h6>
     <img class="profile-img rounded-circle" :src="keep.creator.picture" height="30">

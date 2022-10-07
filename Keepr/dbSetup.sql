@@ -61,7 +61,12 @@ CREATE TABLE IF NOT EXISTS vaultKeeps(
   FOREIGN KEY (keepId) REFERENCES keeps(id) ON DELETE CASCADE
 ) DEFAULT CHARSET utf8 COMMENT '';
 
--- INSERT INTO keeps
--- (name, img, description, creatorId, vaultKeepId)
--- VALUES
--- ("Wild Dingo", "https://www.boredpanda.com/blog/wp-content/uploads/2020/11/raccoons-hot-dogs-james-blackwood-nova-scotia-coverimage.jpg", "63059889588984525e6be97d", );
+INSERT INTO keeps
+(name, img, description, creatorId)
+VALUES
+("Camping", "https://images.unsplash.com/photo-1504851149312-7a075b496cc7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Y2FtcGluZ3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=600&q=60", "Camping time", "63059889588984525e6be97d");
+
+INSERT INTO keeps
+(name, img, description, creatorId)
+VALUES
+("Fair Vibes", "https://images.unsplash.com/photo-1610659606489-77967e40fa35?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8ZmFpcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=600&q=60", "Ferris Wheel", "630598d573bee231866dd930");
